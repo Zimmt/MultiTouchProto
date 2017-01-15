@@ -11,8 +11,8 @@ BaseLook =  {
 			//"border-style": "solid",
 			"border-color": Colors.black,
 		}
-	}
-	, node: {
+	},
+	node: {
 		style: {
 			init: {
 				"fill": Colors.black,
