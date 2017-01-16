@@ -63,8 +63,8 @@ BaseLook =  {
 			},
 			normal: {
 				r: 15,
-				cx : function(v)  { return v.point.x; },
-				cy : function(v) { return v.point.y; },
+				cx : function(v)  { return v.x; },
+				cy : function(v) { return v.y; },
 			},
 			exit: {
 				r: 0	
