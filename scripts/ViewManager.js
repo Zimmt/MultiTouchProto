@@ -77,7 +77,7 @@ function ViewManager(look) {
 		.style(this.look.canvas.style)
 		.on("click", function(d,i) {
 			console.log("click");
-			d3.event.stopPropagation();
+			d3.event.sourceEvent.stopPropagation();
 			
 			var p = d3.mouse(self.svg.node());
 			var v = self.graphView.getNodeInReach(p, self.reachRadius);
@@ -86,9 +86,13 @@ function ViewManager(look) {
 				self.graphView.addNode(p[0], p[1]);
 			}
 		})
+		.on("MozMagnifyGestureStart", function(d,i) {
+			d3.event.preventDefault();
+			d3.event.sourceEvent.stopPropagation();
+		})
 		.on("MozMagnifyGestureUpdate", function(d,i) {
 			d3.event.preventDefault();
-			d3.event.stopPropagation();
+			d3.event.sourceEvent.stopPropagation();
 			console.log("magnify gesture");
 		});
 	
