@@ -81,7 +81,8 @@ function ViewManager(look) {
 			
 			var p = d3.mouse(self.svg.node());
 			var v = self.graphView.getNodeInReach(p, self.reachRadius);
-			if (v === undefined && self.dragcount == 1) {
+			if (v === undefined) {
+				console.log("add node");
 				self.graphView.addNode(p[0], p[1]);
 			}
 		})
