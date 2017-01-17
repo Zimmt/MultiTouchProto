@@ -75,9 +75,6 @@ function ViewManager(look) {
 		.attr("id", "canvas")
 		.attr(this.look.canvas.attr)
 		.style(this.look.canvas.style)
-		.on("MozRotateGesture", function(d,i) {
-			console.log("rotate gesture");
-		})
 		.on("MozMagnifyGesture", function(d,i) {
 			console.log("magnify gesture");
 		});
@@ -97,21 +94,16 @@ function ViewManager(look) {
 				var p = d3.mouse(self.svg.node());
 				console.log("start " + p[0] + " " + p[1] );
 				self.dragcount++;
-				
-				var v = self.graphView.getNodeInReach(p, self.reachRadius);
-				if (v === undefined && self.dragcount == 1) {
-					self.graphView.addNode(p[0], p[1]);
-				}
 			})
 			.on("drag", function(d,i) {
 				var p = d3.mouse(self.svg.node());
-				console.log("move " + p[0] + " " + p[1] );
+				//console.log("move " + p[0] + " " + p[1] );
 				
 				// if (self.dragcount > 1) {
 				// 	console.log("multitouch");
 				// 	// would this be a drag gesture?
 				// } else {
-				if (self.dragcount ==1 ) {	
+				if (self.dragcount == 1) {	
 					var v = self.graphView.getNodeInReach(p, self.reachRadius);
 					if (v !== undefined) {
 						console.log("move vertex");
@@ -124,6 +116,11 @@ function ViewManager(look) {
 			.on("dragend", function(d,i) {
 				var p = d3.mouse(self.svg.node());
 				console.log("end " + p[0] + " " + p[1] );
+				
+				var v = self.graphView.getNodeInReach(p, self.reachRadius);
+				if (v === undefined && self.dragcount == 1) {
+					self.graphView.addNode(p[0], p[1]);
+				}
 				
 				self.dragcount--;
 			});
