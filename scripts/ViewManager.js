@@ -88,11 +88,11 @@ function ViewManager(look) {
 		})
 		.on("MozMagnifyGestureStart", function(d,i) {
 			d3.event.preventDefault();
-			d3.event.sourceEvent.stopPropagation();
+			d3.event.stopPropagation();
 		})
 		.on("MozMagnifyGestureUpdate", function(d,i) {
 			d3.event.preventDefault();
-			d3.event.sourceEvent.stopPropagation();
+			d3.event.stopPropagation();
 			console.log("magnify gesture");
 		});
 	
