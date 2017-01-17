@@ -78,8 +78,13 @@ function ViewManager(look) {
 		.on("click", function(d,i) {
 			console.log("click");
 			d3.event.stopPropagation();
+			
+			var v = self.graphView.getNodeInReach(p, self.reachRadius);
+			if (v === undefined && self.dragcount == 1) {
+				self.graphView.addNode(p[0], p[1]);
+			}
 		})
-		.on("MozMagnifyGesture", function(d,i) {
+		.on("MozMagnifyGestureUpdate", function(d,i) {
 			d3.event.preventDefault();
 			console.log("magnify gesture");
 		});
@@ -102,12 +107,14 @@ function ViewManager(look) {
 			})
 			.on("drag", function(d,i) {
 				var p = d3.mouse(self.svg.node());
-				console.log("drag " + p[0] + " " + p[1] );
+				//console.log("drag " + p[0] + " " + p[1] );
+				console.log("drag");
 				
 				// if (self.dragcount > 1) {
 				// 	console.log("multitouch");
 				// 	// would this be a drag gesture?
 				// } else {
+				
 				if (self.dragcount == 1) {	
 					var v = self.graphView.getNodeInReach(p, self.reachRadius);
 					if (v !== undefined) {
@@ -121,11 +128,6 @@ function ViewManager(look) {
 			.on("dragend", function(d,i) {
 				var p = d3.mouse(self.svg.node());
 				console.log("end " + p[0] + " " + p[1] );
-				
-				var v = self.graphView.getNodeInReach(p, self.reachRadius);
-				if (v === undefined && self.dragcount == 1) {
-					self.graphView.addNode(p[0], p[1]);
-				}
 				
 				self.dragcount--;
 			});
