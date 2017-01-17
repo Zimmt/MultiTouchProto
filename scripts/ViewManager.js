@@ -75,7 +75,12 @@ function ViewManager(look) {
 		.attr("id", "canvas")
 		.attr(this.look.canvas.attr)
 		.style(this.look.canvas.style)
+		.on("click", function(d,i) {
+			console.log("click");
+			d3.event.stopPropagation();
+		})
 		.on("MozMagnifyGesture", function(d,i) {
+			d3.event.preventDefault();
 			console.log("magnify gesture");
 		});
 	
