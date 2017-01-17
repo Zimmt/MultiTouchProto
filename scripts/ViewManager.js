@@ -102,7 +102,7 @@ function ViewManager(look) {
 			})
 			.on("drag", function(d,i) {
 				var p = d3.mouse(self.svg.node());
-				//console.log("move " + p[0] + " " + p[1] );
+				console.log("drag " + p[0] + " " + p[1] );
 				
 				// if (self.dragcount > 1) {
 				// 	console.log("multitouch");
