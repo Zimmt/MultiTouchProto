@@ -1,11 +1,9 @@
+
 function InteractionView(svg, look) {
+	
 	this.svg = svg;
 	this.look = look;
 	this.trajectories = this.svg.append("g").attr("id", "trajectories");
-
-	/**var line_func = d3.svg.line()
-		.x(function(d) { return d.x; })
-		.y(function(d) { return d.y; });**/
 
 	this.enterTrajactory= function(path) {
 		var self = this;
@@ -30,6 +28,7 @@ function InteractionView(svg, look) {
 
 
 function GraphView(svg, look) {
+	
 	this.svg = svg;
 	this.look = look;
 	this.edges = this.svg.append("g").attr("id", "edges");
@@ -39,7 +38,6 @@ function GraphView(svg, look) {
 		.x(function(d) { return d.x; })
 		.y(function(d) { return d.y; });
 	
-
 	this.enterGraph = function(graph) {
 		this.enterEdges(graph.edges);
 		this.enterVertices(graph.vertices);	
@@ -83,12 +81,11 @@ function GraphView(svg, look) {
 }
 
 
-
-
 function ViewManager(look) {
-	var self = this;
 	
+	var self = this;
 	this.look = look;
+	
 	this.svg = d3.select("#graph").append("svg") //TODO listen on group?
 		.attr("id", "canvas")
 		.attrs(this.look.canvas.attr);
@@ -96,22 +93,6 @@ function ViewManager(look) {
 	
 	this.interactionView = new InteractionView(this.svg, this.look);
 	this.graphView = new GraphView(this.svg, this.look);
-
-	// this.websocket = new WebSocket("ws://localhost:2000");
-
-	//handle incoming events
-	/**this.websocket.onmessage = function(msg) {
-		var obj = JSON.parse(msg.data);
-		if (obj.type == "graph") {
-			self.graphView.enterGraph(obj);
-		} else if (obj.type == "polyline") {
-			if (obj.is_new) {
-				self.interactionView.enterTrajactory(obj);
-			} else {
-				self.interactionView.updateTrajactory(obj);
-			}
-		}
-	}**/
 	
 	this.dragcount = 0;
 	
@@ -123,11 +104,14 @@ function ViewManager(look) {
 		console.log("moveCanvasDrag");
 	}
 
-	this.drag = d3.drag().on("start", function(d,i) {
+	this.drag = d3.drag()
+	
+			.on("start", function(d,i) {
 				console.log("start " + self.dragcount + " " + d3.event.identifier);
 				self.dragcount = d3.event.active + 1;
 				console.log(self.dragcount);
 			})
+			
 			.on("drag", function(d,i) {
 				console.log("drag " + self.dragcount + " " + d3.event.type);
 				if (this.dragcount == 1) {
@@ -136,10 +120,10 @@ function ViewManager(look) {
 					moveCanvasDrag(d, d3.mouse);
 				}
 			})
+			
 			.on("end", function(d,i) {
 				this.dragcount = d3.event.active;
 			});
 
 		this.svg.call(this.drag);
-
 }
