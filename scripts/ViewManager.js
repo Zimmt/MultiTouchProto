@@ -86,7 +86,7 @@ function ViewManager(look) {
 	var self = this;
 	this.look = look;
 	
-	this.svg = d3.select("#graph").append("svg") //TODO listen on group?
+	this.svg = d3.select("#graph").append("svg") //TODO make this work
 		.attr("id", "canvas")
 		.attrs(this.look.canvas.attr);
 		//.styles(this.look.canvas.style);
@@ -106,9 +106,15 @@ function ViewManager(look) {
 
 	this.drag = d3.drag()
 	
+			.filter(function() {
+				// default: return !d3.event.button;
+				// ignores mousedown events on secondary buttons
+				// events that don't pass the filter shouldn't create a drag behavior
+			})
+	
 			.on("start", function(d,i) {
 				console.log("start " + self.dragcount + " " + d3.event.identifier);
-				self.dragcount = d3.event.active + 1;
+				self.dragcount = d3.event.active + 1; // d3.event has exposes several useful fields...
 				console.log(self.dragcount);
 			})
 			

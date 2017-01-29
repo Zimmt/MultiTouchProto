@@ -25,7 +25,6 @@ BaseLook =  {
 				"fill": Colors.white,
 				"stroke": "black",
 				"stroke-width": 2,
-				},
 			},
 			mouseover: {
 				fill: Colors.red,
