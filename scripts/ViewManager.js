@@ -45,13 +45,9 @@ function GraphView(svg, look) {
 
 	this.enterVertices = function(vertices) {
 		var self = this;
-		var t = this.nodes.selectAll("circle").data(vertices, function(v) { return v.id});
-		//t.enter()
-		//    .append("path")
-		//    .attr("d", line_func(path.points))
-		//    .style(this.look.traj.style.normal);
-		
-		t  = t.attr(this.look.node.attr.normal);
+		var t = this.nodes.selectAll("circle")
+			.data(vertices, function(v) { return v.id})
+			.attr(this.look.node.attr.normal);
 
 		var nodes = t.enter()
 			.append("circle")
@@ -86,44 +82,44 @@ function ViewManager(look) {
 	var self = this;
 	this.look = look;
 	
-	this.svg = d3.select("#graph").append("svg") //TODO make this work
+	this.svg = d3.select("#graph").append("svg")
 		.attr("id", "canvas")
-		.attrs(this.look.canvas.attr);
-		//.styles(this.look.canvas.style);
+		.attrs(this.look.canvas.attr)
+		.styles(this.look.canvas.style);
 	
 	this.interactionView = new InteractionView(this.svg, this.look);
 	this.graphView = new GraphView(this.svg, this.look);
 	
 	this.dragcount = 0;
 	
-	this.normalDrag = function(d, mousePos) {
-		console.log("normalDrag");
+	this.singleDrag = function(d, mousePos) {
+		console.log("singleDrag");
 	}
 	
-	this.moveCanvasDrag = function(d, mousPos) {
-		console.log("moveCanvasDrag");
+	this.doubleDrag = function(d, mousPos) {
+		console.log("doubleDrag");
 	}
 
 	this.drag = d3.drag()
 	
 			.filter(function() {
-				// default: return !d3.event.button;
+				// maybe this is useful?
+				return !d3.event.button; // default
 				// ignores mousedown events on secondary buttons
 				// events that don't pass the filter shouldn't create a drag behavior
 			})
 	
 			.on("start", function(d,i) {
-				console.log("start " + self.dragcount + " " + d3.event.identifier);
+				console.log("start " + d3.event.identifier);
 				self.dragcount = d3.event.active + 1; // d3.event has exposes several useful fields...
-				console.log(self.dragcount);
 			})
 			
 			.on("drag", function(d,i) {
-				console.log("drag " + self.dragcount + " " + d3.event.type);
-				if (this.dragcount == 1) {
-					normalDrag(d, d3.mouse);
-				} else if (this.dragcount == 2) {
-					moveCanvasDrag(d, d3.mouse);
+				console.log("drag " + d3.event.type);
+				if (self.dragcount == 1) {
+					self.singleDrag(d, d3.mouse);
+				} else if (self.dragcount == 2) {
+					self.doubleDrag(d, d3.mouse);
 				}
 			})
 			
