@@ -1,3 +1,10 @@
 node_modules/d3-*
 !node_modules/d3-selection-multi
+node_modules/.bin
+node_modules/commander
+node_modules/graceful-readlink
+node_modules/iconv-lite
+node_modules/rw
+node_modules/xmlhttprequest
+
 package.json
