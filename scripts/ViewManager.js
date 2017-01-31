@@ -73,7 +73,7 @@ function ViewManager(look) {
 	this.doubleGesture = undefined;
 	
 	this.dragcount = 0;
-	this.dragEps = 20;
+	this.dragEps = 10;
 	
 	this.singleDrag = function(d, mousePos) {
 		console.log("singleDrag");
