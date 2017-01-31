@@ -73,7 +73,7 @@ function ViewManager(look) {
 	this.doubleGesture = undefined;
 	
 	this.dragcount = 0;
-	this.dragEps = 5;
+	this.dragEps = 20;
 	
 	this.singleDrag = function(d, mousePos) {
 		console.log("singleDrag");
@@ -91,6 +91,8 @@ function ViewManager(look) {
 	this.doubleDrag = function(d, mousPos) {
 		console.log("doubleDrag");
 		var p = d3.mouse(self.svg.node());
+		// TODO: nothing detected when one finger fix and the other moves
+		// only automatic zoom is performed
 		
 		if (d3.event.dx < self.dragEps && d3.event.dy < self.dragEps) { // fix position
 			if (self.doubleGesture === undefined) {
@@ -102,7 +104,7 @@ function ViewManager(look) {
 						pos1: self.doubleGesture.pos, id1: self.doubleGesture,
 						pos2: p, id2: d3.event.identifier};
 				
-			} else if (self.doubleGesture.name = "move"
+			} else if (self.doubleGesture.name == "move"
 				&& self.doubleGesture.id != d3.event.identifier) {
 					self.doubleGesture = {name: "rotate", 
 						center: p, idc: d3.event.identifier,
@@ -125,13 +127,13 @@ function ViewManager(look) {
 					self.doubleGesture.pos = p;
 				}
 				
-			} else if (self.doubleGesture.name = "move"
+			} else if (self.doubleGesture.name == "move"
 				&& self.doubleGesture.id != d3.event.identifier) {
 					self.doubleGesture = {name: "doubleMove", 
 						pos1: p, id1: d3.event.identifier,
 						pos2: self.doubleGesture.pos, id2: self.doubleGesture.id};
 						
-			} else if (self.doubleGesture.name = "doubleFix") {
+			} else if (self.doubleGesture.name == "doubleFix") {
 				if (self.doubleGesture.id1 == d3.event.identifier) {
 					self.doubleGesture = {name: "rotate",
 						center: self.doubleGesture.pos2, idc: self.doubleGesture.id2,
@@ -143,8 +145,20 @@ function ViewManager(look) {
 						rotPos: self.doubleGesture.pos2, idr: self.doubleGesture.id2};
 						
 				} else {
-					console.log("There is something wrong with the identifiers");
+					condole.log("there are more than two drag gestures");
 				}
+			} else if (self.doubleGesture.name == "rotate") {
+				if (self.doubleGesture.idr == d3.event.identifier) {
+					self.doubleGesture.rotPos = p;
+				} else if (self.doubleGesture.center == d3.event.identifier) {
+					self.doubleGesture = {name: "doubleMove",
+						pos1: self.doubleGesture.rotPos, id1: self.doubleGesture.idr,
+						pos2: p, id2: d3.event.identifier};
+				} else {
+					console.log("more thatn two drag gestures...");
+				}
+			} else {
+				console.log("There is something wrong with the identifiers");
 			}
 		}
 		console.log("double gesture: " + self.doubleGesture.name);
@@ -184,7 +198,7 @@ function ViewManager(look) {
 			})
 			
 			.on("end", function(d,i) {
-				this.dragcount = d3.event.active;
+				this.dragcount = d3.event.active; // number of active drag gestures not including this one
 			});
 
 		this.svg.call(this.drag);
