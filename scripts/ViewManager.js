@@ -147,7 +147,7 @@ function ViewManager(look) {
 				}
 			}
 		}
-		console.log(self.doubleGesture.name);
+		console.log("double gesture: " + self.doubleGesture.name);
 	}
 	
 	this.dragcount = 0;
